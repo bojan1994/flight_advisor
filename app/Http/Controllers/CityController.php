@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\City;
 
 class CityController extends Controller
 {
@@ -11,8 +12,10 @@ class CityController extends Controller
         return view('city-create');
     }
 
-    public function store()
+    public function store(Request $request)
     {
-        return 'test';
+        City::create($request->all());
+
+        return redirect()->route('dashboard');
     }
 }
