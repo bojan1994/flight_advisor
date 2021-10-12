@@ -13,14 +13,10 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth'])->name('dashboard');
+Route::get('/dashboard', 'App\Http\Controllers\DashboardController')->middleware(['auth'])->name('dashboard');
 
-Route::get('/dashboard/create-city', 'App\Http\Controllers\CityController@create')
-    ->name('city.create');
+Route::get('/dashboard/create-city', 'App\Http\Controllers\CityController@create')->name('city.create');
 
-Route::post('/dashboard/create-city', 'App\Http\Controllers\CityController@store')
-    ->name('city.store');
+Route::post('/dashboard/create-city', 'App\Http\Controllers\CityController@store')->name('city.store');
 
 require __DIR__.'/auth.php';
