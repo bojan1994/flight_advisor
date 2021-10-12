@@ -17,6 +17,10 @@
                             <x-label for="name" :value="__('Name')" />
 
                             <x-input id="name" class="block mt-1" type="text" name="name" :value="old('name')" autofocus />
+
+                            @error('name')
+                                <span style="color: #a50606;">{{ $message }}</span>
+                            @enderror
                         </div>
 
                         <!-- Country -->
@@ -24,6 +28,10 @@
                             <x-label for="country" :value="__('Country')" />
 
                             <x-input id="country" class="block mt-1" type="text" name="country" :value="old('country')" autofocus />
+                            
+                            @error('country')
+                                <span style="color: #a50606;">{{ $message }}</span>
+                            @enderror
                         </div>
 
                         <!-- Description -->
@@ -31,6 +39,10 @@
                             <x-label for="description" :value="__('Description')" />
 
                             <x-textarea id="description" class="block mt-1 w-full" name="description" :value="old('description')" autofocus />
+                            
+                            @error('description')
+                                <span style="color: #a50606;">{{ $message }}</span>
+                            @enderror
                         </div>
 
                         <div class="flex items-center justify-end mt-4">

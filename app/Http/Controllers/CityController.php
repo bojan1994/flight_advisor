@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
+use App\Http\Requests\StoreCityRequest;
 use App\Models\City;
 
 class CityController extends Controller
@@ -12,7 +12,7 @@ class CityController extends Controller
         return view('city-create');
     }
 
-    public function store(Request $request)
+    public function store(StoreCityRequest $request)
     {
         City::create($request->all());
 
