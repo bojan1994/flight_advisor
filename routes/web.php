@@ -19,4 +19,6 @@ Route::get('/dashboard/create-city', 'App\Http\Controllers\CityController@create
 
 Route::post('/dashboard/create-city', 'App\Http\Controllers\CityController@store')->name('city.store');
 
+Route::get('/dashboard/import', 'App\Http\Controllers\ImportController')->name('import');
+
 require __DIR__.'/auth.php';
