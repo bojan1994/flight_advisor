@@ -16,6 +16,8 @@ class CityController extends Controller
     {
         City::create($request->all());
 
+        notify()->success('City successfully created');
+
         return redirect()->route('dashboard');
     }
 }

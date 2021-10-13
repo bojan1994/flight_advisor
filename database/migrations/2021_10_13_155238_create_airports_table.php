@@ -15,6 +15,7 @@ class CreateAirportsTable extends Migration
     {
         Schema::create('airports', function (Blueprint $table) {
             $table->id();
+            $table->bigInteger('airport_id');
             $table->string('name');
             $table->string('city');
             $table->string('country');

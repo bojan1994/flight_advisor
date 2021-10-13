@@ -15,6 +15,7 @@ class Airport extends Model
      * @var string[]
      */
     protected $fillable = [
+        'airport_id',
         'name',
         'city',
         'country',

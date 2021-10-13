@@ -17,6 +17,7 @@
         <!-- Scripts -->
         <script src="{{ asset('js/app.js') }}" defer></script>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.2/dist/js/bootstrap.min.js"></script>
+        @notify_css
     </head>
     <body class="font-sans antialiased">
         <div class="min-h-screen bg-gray-100">
@@ -35,4 +36,6 @@
             </main>
         </div>
     </body>
+    @notify_js
+    @notify_render
 </html>

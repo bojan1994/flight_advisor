@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\City;
+use App\Models\Airport;
 
 class DashboardController extends Controller
 {
@@ -15,7 +16,11 @@ class DashboardController extends Controller
     public function __invoke()
     {
         $cities = City::get();
+        $airports = Airport::get();
 
-        return view('dashboard', ['cities' => $cities]);
+        return view('dashboard', [
+            'cities' => $cities,
+            'airports' => $airports,
+        ]);
     }
 }

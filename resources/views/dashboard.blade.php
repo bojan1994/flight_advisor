@@ -33,6 +33,43 @@
                     </table>
 
                     <a href="{{ route('import') }}">Import airports</a>
+
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th scope="col">Airport ID</th>
+                                <th scope="col">Name</th>
+                                <th scope="col">City</th>
+                                <th scope="col">Country</th>
+                                <th scope="col">IATA</th>
+                                <th scope="col">ICAO</th>
+                                <th scope="col">Latitude</th>
+                                <th scope="col">Longitude</th>
+                                <th scope="col">Altitude</th>
+                                <th scope="col">Tz</th>
+                                <th scope="col">Type</th>
+                                <th scope="col">Source</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach ($airports as $airport)
+                                <tr>
+                                    <th scope="row">{{ $airport->airport_id }}</th>
+                                    <td>{{ $airport->name }}</td>
+                                    <td>{{ $airport->city }}</td>
+                                    <td>{{ $airport->country }}</td>
+                                    <td>{{ $airport->iata }}</td>
+                                    <td>{{ $airport->icao }}</td>
+                                    <td>{{ $airport->latitude }}</td>
+                                    <td>{{ $airport->longitude }}</td>
+                                    <td>{{ $airport->altitude }}</td>
+                                    <td>{{ $airport->tz }}</td>
+                                    <td>{{ $airport->type }}</td>
+                                    <td>{{ $airport->source }}</td>
+                                </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
                 </div>
             </div>
         </div>
