@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class City extends Model
+class Comment extends Model
 {
     use HasFactory;
 
@@ -15,13 +15,18 @@ class City extends Model
      * @var string[]
      */
     protected $fillable = [
-        'name',
-        'country',
-        'description',
+        'city_id',
+        'user_id',
+        'content',
     ];
 
-    public function comment()
+    public function city()
     {
-        return $this->hasMany(Comment::class);
+        return $this->belongsTo(City::class);
+    }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
     }
 }

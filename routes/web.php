@@ -21,4 +21,14 @@ Route::post('/dashboard/create-city', 'App\Http\Controllers\CityController@store
 
 Route::get('/dashboard/import', 'App\Http\Controllers\ImportController')->middleware(['auth', 'admin'])->name('import');
 
+Route::get('/dashboard/add-comment', 'App\Http\Controllers\CommentController@create')->name('comment.create');
+
+Route::post('/dashboard/add-comment', 'App\Http\Controllers\CommentController@store')->name('comment.store');
+
+Route::get('/dashboard/edit-comment/{comment}', 'App\Http\Controllers\CommentController@edit')->name('comment.edit');
+
+Route::patch('/dashboard/update-comment/{comment}', 'App\Http\Controllers\CommentController@update')->name('comment.update');
+
+Route::delete('/dashboard/delete-comment/{comment}', 'App\Http\Controllers\CommentController@destroy')->name('comment.delete');
+
 require __DIR__.'/auth.php';

@@ -1,7 +1,7 @@
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            {{ __('Dashboard') }}
+            {{ Auth::user()->username }}
         </h2>
     </x-slot>
 
@@ -71,6 +71,30 @@
                                 @endforeach
                             </tbody>
                         </table>
+                    @elseif (Auth::user()->role == 'regular')
+                        <a href="{{ route('comment.create') }}">Add comment</a>
+                        @foreach ($cities as $city)
+                            <h3>{{ $city->name }}</h3>
+                            <h6>Comments</h6>
+                            <ul>
+                                @foreach ($city->comment as $comment)
+                                    <li>
+                                        {{ $comment->content }} 
+                                        <div>
+                                            <a class="btn btn-link" href="{{ route('comment.edit', [$comment]) }}">Update</a>
+                                        </div>
+                                        <form method="POST" action="{{ route('comment.delete', [$comment])}}">
+                                            @csrf
+                                            @method('DELETE')
+
+                                            <button class="btn btn-link" type="submit">Delete</button>
+                                        </form>
+                                    </li>
+                                    <hr>
+                                @endforeach
+                            </ul>
+                            <hr>
+                        @endforeach
                     @endif
                 </div>
             </div>
