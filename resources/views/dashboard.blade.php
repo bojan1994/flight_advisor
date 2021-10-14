@@ -79,7 +79,13 @@
                             <ul>
                                 @foreach ($city->comment as $comment)
                                     <li>
-                                        {{ $comment->content }} 
+                                        <p>{{ $comment->content }}</p>
+                                        <div>
+                                            <small>Posted on {{ \Carbon\Carbon::parse($comment->created_at)->format('d.m.Y H:i:s') }}</small>
+                                        </div>
+                                        <div>
+                                            <small>Updated at {{ \Carbon\Carbon::parse($comment->updated_at)->format('d.m.Y H:i:s') }}</small>
+                                        </div>
                                         <div>
                                             <a class="btn btn-link" href="{{ route('comment.edit', [$comment]) }}">Update</a>
                                         </div>
@@ -90,7 +96,9 @@
                                             <button class="btn btn-link" type="submit">Delete</button>
                                         </form>
                                     </li>
-                                    <hr>
+                                    @if (!$loop->last)
+                                        <hr>
+                                    @endif
                                 @endforeach
                             </ul>
                             <hr>
