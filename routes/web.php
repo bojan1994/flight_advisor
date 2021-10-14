@@ -31,4 +31,6 @@ Route::patch('/dashboard/update-comment/{comment}', 'App\Http\Controllers\Commen
 
 Route::delete('/dashboard/delete-comment/{comment}', 'App\Http\Controllers\CommentController@destroy')->middleware(['auth', 'regular'])->name('comment.delete');
 
+Route::post('/dashboard/number-of-comments/{cityId}/{limit}', 'App\Http\Controllers\NumberOfCommentsController')->name('comments.number');
+
 require __DIR__.'/auth.php';

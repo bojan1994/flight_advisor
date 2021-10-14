@@ -76,9 +76,9 @@
                         @foreach ($cities as $city)
                             <h3>{{ $city->name }}</h3>
                             <h6>Comments</h6>
-                            <ul>
-                                @foreach ($city->comment as $comment)
-                                    <li>
+                            Show only <input data-city-id="{{ $city->id }}" class="number_of_comments" type="text" name="number_of_comments" style="width: 50px" /> comments
+                            <div class="unfiltered-comments-{{ $city->id }}">
+                                    @foreach ($city->comment as $comment)
                                         <p>{{ $comment->content }}</p>
                                         <div>
                                             <small>Posted on {{ \Carbon\Carbon::parse($comment->created_at)->format('d.m.Y H:i:s') }}</small>
@@ -95,12 +95,12 @@
 
                                             <button class="btn btn-link" type="submit">Delete</button>
                                         </form>
-                                    </li>
-                                    @if (!$loop->last)
-                                        <hr>
-                                    @endif
-                                @endforeach
-                            </ul>
+                                        @if (!$loop->last)
+                                            <hr>
+                                        @endif
+                                    @endforeach
+                            </div>
+                            <div class="filtered-comments-{{ $city->id }} d-none"></div>
                             <hr>
                         @endforeach
                     @endif
@@ -108,4 +108,29 @@
             </div>
         </div>
     </div>
+
+    <script>
+        $('.number_of_comments').on('input', function (e) {
+            let limit = $(this).val();
+            let cityId = $(this).attr('data-city-id');
+            if (limit) {
+                $.ajax({
+                    url: '/dashboard/number-of-comments/' + cityId + '/' + limit,
+                    type: 'POST',
+                    data: {
+                        _token: "{{ csrf_token() }}",
+                    },
+                    beforeSend: function() {
+                        $('.unfiltered-comments-' + cityId).addClass('d-none');
+                    },
+                }).done(function (data) {
+                    $('.filtered-comments-' + cityId).html(data.html);
+                    $('.filtered-comments-' + cityId).removeClass('d-none');
+                });
+            } else {
+                $('.unfiltered-comments-' + cityId).removeClass('d-none');
+                $('.filtered-comments-' + cityId).addClass('d-none');
+            }
+        });
+    </script>
 </x-app-layout>
