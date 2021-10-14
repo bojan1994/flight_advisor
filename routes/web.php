@@ -33,4 +33,6 @@ Route::delete('/dashboard/delete-comment/{comment}', 'App\Http\Controllers\Comme
 
 Route::post('/dashboard/number-of-comments/{cityId}/{limit}', 'App\Http\Controllers\NumberOfCommentsController')->name('comments.number');
 
+Route::post('/dashboard/search-by-city/{cityName}', 'App\Http\Controllers\SearchByCityController')->name('city.search');
+
 require __DIR__.'/auth.php';

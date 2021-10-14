@@ -73,36 +73,42 @@
                         </table>
                     @elseif (Auth::user()->role == 'regular')
                         <a href="{{ route('comment.create') }}">Add comment</a>
-                        @foreach ($cities as $city)
-                            <h3>{{ $city->name }}</h3>
-                            <h6>Comments</h6>
-                            Show only <input data-city-id="{{ $city->id }}" class="number_of_comments" type="text" name="number_of_comments" style="width: 50px" /> comments
-                            <div class="unfiltered-comments-{{ $city->id }}">
-                                    @foreach ($city->comment as $comment)
-                                        <p>{{ $comment->content }}</p>
-                                        <div>
-                                            <small>Posted on {{ \Carbon\Carbon::parse($comment->created_at)->format('d.m.Y H:i:s') }}</small>
-                                        </div>
-                                        <div>
-                                            <small>Updated at {{ \Carbon\Carbon::parse($comment->updated_at)->format('d.m.Y H:i:s') }}</small>
-                                        </div>
-                                        <div>
-                                            <a class="btn btn-link" href="{{ route('comment.edit', [$comment]) }}">Update</a>
-                                        </div>
-                                        <form method="POST" action="{{ route('comment.delete', [$comment])}}">
-                                            @csrf
-                                            @method('DELETE')
+                        <div>
+                            Search by city: <input class="filter_by_city" type="text" name="filter_by_city" />
+                        </div>
+                        <div class="unfiltered-cities">
+                            @foreach ($cities as $city)
+                                <h3>{{ $city->name }}</h3>
+                                <h6>Comments</h6>
+                                Show only <input data-city-id="{{ $city->id }}" class="number_of_comments" type="text" name="number_of_comments" style="width: 50px" /> comments
+                                <div class="unfiltered-comments-{{ $city->id }}">
+                                        @foreach ($city->comment as $comment)
+                                            <p>{{ $comment->content }}</p>
+                                            <div>
+                                                <small>Posted on {{ \Carbon\Carbon::parse($comment->created_at)->format('d.m.Y H:i:s') }}</small>
+                                            </div>
+                                            <div>
+                                                <small>Updated at {{ \Carbon\Carbon::parse($comment->updated_at)->format('d.m.Y H:i:s') }}</small>
+                                            </div>
+                                            <div>
+                                                <a class="btn btn-link" href="{{ route('comment.edit', [$comment]) }}">Update</a>
+                                            </div>
+                                            <form method="POST" action="{{ route('comment.delete', [$comment])}}">
+                                                @csrf
+                                                @method('DELETE')
 
-                                            <button class="btn btn-link" type="submit">Delete</button>
-                                        </form>
-                                        @if (!$loop->last)
-                                            <hr>
-                                        @endif
-                                    @endforeach
-                            </div>
-                            <div class="filtered-comments-{{ $city->id }} d-none"></div>
-                            <hr>
-                        @endforeach
+                                                <button class="btn btn-link" type="submit">Delete</button>
+                                            </form>
+                                            @if (!$loop->last)
+                                                <hr>
+                                            @endif
+                                        @endforeach
+                                </div>
+                                <div class="filtered-comments-{{ $city->id }} d-none"></div>
+                                <hr>
+                            @endforeach
+                        </div>
+                        <div class="filtered-cities d-none"></div>
                     @endif
                 </div>
             </div>
@@ -130,6 +136,52 @@
             } else {
                 $('.unfiltered-comments-' + cityId).removeClass('d-none');
                 $('.filtered-comments-' + cityId).addClass('d-none');
+            }
+        });
+
+        $('.filter_by_city').on('input', function (e) {
+            let cityName = $(this).val();
+            let limit;
+            let cityId;
+            if (cityName) {
+                $.ajax({
+                    url: '/dashboard/search-by-city/' + cityName,
+                    type: 'POST',
+                    data: {
+                        _token: "{{ csrf_token() }}",
+                    },
+                    beforeSend: function() {
+                        $('.unfiltered-cities').addClass('d-none');
+                    },
+                }).done(function (data) {
+                    $('.filtered-cities').html(data.html);
+                    $('.filtered-cities').removeClass('d-none');
+                    $('.number_of_comments').on('input', function (e) {
+                        limit = $(this).val();
+                        cityId = $(this).attr('data-city-id');
+                        if (limit) {
+                            $.ajax({
+                                url: '/dashboard/number-of-comments/' + cityId + '/' + limit,
+                                type: 'POST',
+                                data: {
+                                    _token: "{{ csrf_token() }}",
+                                },
+                                beforeSend: function() {
+                                    $('.unfiltered-comments-' + cityId).addClass('d-none');
+                                },
+                            }).done(function (data) {
+                                $('.filtered-comments-' + cityId).html(data.html);
+                                $('.filtered-comments-' + cityId).removeClass('d-none');
+                            });
+                        } else {
+                            $('.unfiltered-comments-' + cityId).removeClass('d-none');
+                            $('.filtered-comments-' + cityId).addClass('d-none');
+                        }
+                    });
+                });
+            } else {
+                $('.unfiltered-cities').removeClass('d-none');
+                $('.filtered-cities').addClass('d-none');
             }
         });
     </script>
