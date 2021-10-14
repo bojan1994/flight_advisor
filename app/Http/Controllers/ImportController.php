@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\City;
 use App\Models\Airport;
+use App\Models\Route;
 
 class ImportController extends Controller
 {
@@ -17,10 +18,11 @@ class ImportController extends Controller
     {
         $cities = City::get();
 
-        $file = fopen(database_path('/data/airports.txt'), "r");
+        $airportsFile = fopen(database_path('/data/airports.txt'), "r");
+        $routesFile = fopen(database_path('/data/routes.txt'), "r");
 
-        while(!feof($file)) { 
-            $data = explode(",", fgets($file));
+        while (!feof($airportsFile)) { 
+            $data = explode(",", fgets($airportsFile));
 
             foreach ($cities as $city) {
                 if (isset($data[2])) {
@@ -48,9 +50,37 @@ class ImportController extends Controller
             }
         }
 
-        fclose($file);
+        $airports = Airport::get();
 
-        notify()->success('Airports successfully imported');
+        while (!feof($routesFile)) {
+            $data = explode(",", fgets($routesFile));
+
+            foreach ($airports as $airport) {
+                if (isset($data[3])) {
+                    if ($data[3] == $airport->airport_id) {
+                        Route::updateOrCreate([
+                            'airline_id' => $data[1],
+                        ], [
+                            'iata' => $data[0],
+                            'airline_id' => $data[1],
+                            'source_airport' => $data[2],
+                            'source_airport_id' => $data[3],
+                            'destination_airport' => $data[4],
+                            'destination_airport_id' => $data[5] != '\N' ? $data[5] : null,
+                            'codeshare' => $data[6],
+                            'stops' => $data[7],
+                            'equipment' => $data[8],
+                            'price' => $data[9],
+                        ]);
+                    }
+                }
+            }
+        }
+
+        fclose($airportsFile);
+        fclose($routesFile);
+
+        notify()->success('Airports and routes successfully imported');
 
         return back();
     }

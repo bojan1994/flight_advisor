@@ -32,7 +32,7 @@
                         </tbody>
                     </table>
 
-                    <a href="{{ route('import') }}">Import airports</a>
+                    <a href="{{ route('import') }}">Import airports and routes</a>
 
                     <table class="table">
                         <thead>

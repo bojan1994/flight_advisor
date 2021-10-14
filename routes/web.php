@@ -15,10 +15,10 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/dashboard', 'App\Http\Controllers\DashboardController')->middleware(['auth'])->name('dashboard');
 
-Route::get('/dashboard/create-city', 'App\Http\Controllers\CityController@create')->name('city.create');
+Route::get('/dashboard/create-city', 'App\Http\Controllers\CityController@create')->middleware(['auth'])->name('city.create');
 
-Route::post('/dashboard/create-city', 'App\Http\Controllers\CityController@store')->name('city.store');
+Route::post('/dashboard/create-city', 'App\Http\Controllers\CityController@store')->middleware(['auth'])->name('city.store');
 
-Route::get('/dashboard/import', 'App\Http\Controllers\ImportController')->name('import');
+Route::get('/dashboard/import', 'App\Http\Controllers\ImportController')->middleware(['auth'])->name('import');
 
 require __DIR__.'/auth.php';
