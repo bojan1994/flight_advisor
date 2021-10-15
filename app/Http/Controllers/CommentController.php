@@ -7,9 +7,13 @@ use App\Models\Comment;
 use App\Models\City;
 use Illuminate\Http\Request;
 
-
 class CommentController extends Controller
 {
+    /**
+     * Return create view
+     *
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
+     */
     public function create()
     {
         $cities = City::get();
@@ -17,6 +21,12 @@ class CommentController extends Controller
         return view('comment-create', ['cities' => $cities]);
     }
 
+    /**
+     * Store comment
+     *
+     * @param CommentRequest $request
+     * @return \Illuminate\Http\RedirectResponse
+     */
     public function store(CommentRequest $request)
     {
         Comment::create($request->all());
@@ -26,6 +36,13 @@ class CommentController extends Controller
         return redirect()->route('dashboard');
     }
 
+    /**
+     * Return edit view
+     *
+     * @param Request $request
+     * @param Comment $comment
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View|\Illuminate\Http\RedirectResponse
+     */
     public function edit(Request $request, Comment $comment)
     {
         if ($request->user()->cannot('userComment', $comment)) {
@@ -37,6 +54,13 @@ class CommentController extends Controller
         return view('edit-comment', ['comment' => $comment]);
     }
 
+    /**
+     * Update comment
+     *
+     * @param Comment $comment
+     * @param CommentRequest $request
+     * @return \Illuminate\Http\RedirectResponse
+     */
     public function update(Comment $comment, CommentRequest $request)
     {
         $comment->content = $request->content;
@@ -47,6 +71,13 @@ class CommentController extends Controller
         return redirect()->route('dashboard');
     }
 
+    /**
+     * Delete comment
+     *
+     * @param Request $request
+     * @param Comment $comment
+     * @return \Illuminate\Http\RedirectResponse
+     */
     public function destroy(Request $request, Comment $comment)
     {
         if ($request->user()->cannot('userComment', $comment)) {

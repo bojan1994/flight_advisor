@@ -13,8 +13,8 @@ class CommentPolicy
     /**
      * Determine if the given comment belongs to the user.
      *
-     * @param  \App\Models\User  $user
-     * @param  \App\Models\Post  $post
+     * @param \App\Models\User $user
+     * @param Comment $comment
      * @return bool
      */
     public function userComment(User $user, Comment $comment)

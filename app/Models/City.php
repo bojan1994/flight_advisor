@@ -20,6 +20,9 @@ class City extends Model
         'description',
     ];
 
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
     public function comment()
     {
         return $this->hasMany(Comment::class);

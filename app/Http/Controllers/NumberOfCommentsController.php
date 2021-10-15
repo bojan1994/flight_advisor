@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Models\City;
 
 class NumberOfCommentsController extends Controller
@@ -10,8 +9,9 @@ class NumberOfCommentsController extends Controller
     /**
      * Handle the incoming request.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @param $cityId
+     * @param $limit
+     * @return array
      */
     public function __invoke($cityId, $limit)
     {

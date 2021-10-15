@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Models\City;
 
 class SearchByCityController extends Controller
@@ -10,8 +9,8 @@ class SearchByCityController extends Controller
     /**
      * Handle the incoming request.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @param $cityName
+     * @return array
      */
     public function __invoke($cityName)
     {
