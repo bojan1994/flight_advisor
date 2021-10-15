@@ -59,7 +59,8 @@ class ImportController extends Controller
                 if (isset($data[3])) {
                     if ($data[3] == $airport->airport_id) {
                         Route::updateOrCreate([
-                            'airline_id' => $data[1],
+                            'source_airport_id' => $data[3],
+                            'destination_airport' => $data[4],
                         ], [
                             'iata' => $data[0],
                             'airline_id' => $data[1],
