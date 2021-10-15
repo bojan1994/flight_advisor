@@ -5,52 +5,62 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Airport;
 use App\Models\Route;
+use App\Models\City;
 use Illuminate\Support\Facades\DB;
 
 class FlightController extends Controller
 {
     public function index()
     {
-        // $airportsFile = fopen(database_path('/data/airports.txt'), "r");
-        // $routesFile = fopen(database_path('/data/routes.txt'), "r");
+        $cities = City::get();
 
-        // while (!feof($airportsFile)) { 
-        //     $data = explode(",", fgets($airportsFile));
-
-        //     print_r($data);
-
-        //     echo '<br>';
-        // }
-
-        // die();
-
-        $airports = Airport::get();
-
-        return view('flight-index', ['airports' => $airports]);
+        return view('flight-index', ['cities' => $cities]);
     }
 
-    public function getFlights($sourceAirportId, $destinationAirportId)
+    public function getFlights($fromCityName, $toCityName)
     {
-        $routes = Route::where('source_airport_id', $sourceAirportId)
-            ->where('destination_airport_id', $destinationAirportId)
+        $fromCity = DB::table('cities')
+            ->join('airports', 'cities.name', '=', 'airports.city')
+            ->where('cities.name', $fromCityName)
             ->get();
 
-        // $routes = DB::table('routes')
-        //     ->select([
-        //         'routes.source_airport_id'
-        //     ])
-        //     ->join('airports', function ($join) {
-        //         $join->on('routes.source_airport_id', '=', 'airports.airport_id');
-        //     })
-        //     ->where('routes.source_airport_id', '=', $sourceAirportId)
-        //     ->where('routes.destination_airport_id', '=', $destinationAirportId)
-        //     ->get();
+        $toCity = DB::table('cities')
+            ->join('airports', 'cities.name', '=', 'airports.city')
+            ->where('cities.name', $toCityName)
+            ->get();
 
-        // return $routes;
+        $airportNames = [];
+
+        $sourceAirport = [];
+        foreach ($fromCity as $from) {
+            $sourceAirport[] = $from->iata;
+            $airportNames[$from->iata] = $from->name; 
+        }
+
+        $destinationAirport = [];
+        foreach ($toCity as $to) {
+            $destinationAirport[] = $to->iata;
+            $airportNames[$to->iata] = $to->name; 
+        }
+
+        $routes = DB::table('cities')
+            ->select([
+                'routes.source_airport',
+                'routes.destination_airport',
+                'routes.price',
+                'routes.stops',
+            ])
+            ->join('airports', 'cities.name', '=', 'airports.city')
+            ->join('routes', 'airports.iata', '=', 'routes.source_airport')
+            ->whereIn('cities.name', [$fromCityName, $toCityName])
+            ->whereIn('routes.source_airport', $sourceAirport)
+            ->whereIn('routes.destination_airport', $destinationAirport)
+            ->get();
 
         return [
             'html' => view('filtered-routes', [
                 'routes' => $routes,
+                'airportNames' => $airportNames,
             ])->render(),
         ];
     }

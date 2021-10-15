@@ -12,17 +12,17 @@
                     <a href="{{ route('dashboard') }}">Back</a>
                     <h4>Find flight</h4>
                     From 
-                    <select class="source_airport_id">
+                    <select class="source_airport">
                         <option selected disabled>City</option>
-                        @foreach ($airports as $airport)
-                            <option value="{{ $airport->airport_id }}">{{ $airport->name }}</option>
+                        @foreach ($cities as $city)
+                            <option value="{{ $city->name }}">{{ $city->name }}</option>
                         @endforeach
                     </select>
                     To 
-                    <select class="destination_airport_id">
+                    <select class="destination_airport">
                         <option selected disabled>City</option>
-                        @foreach ($airports as $airport)
-                            <option value="{{ $airport->airport_id }}">{{ $airport->name }}</option>
+                        @foreach ($cities as $city)
+                            <option value="{{ $city->name }}">{{ $city->name }}</option>
                         @endforeach
                     </select>
                     <button class="btn btn-primary find-flight">Find flights</button>
@@ -35,10 +35,10 @@
     <script>
         $('.find-flight').on('click', function (e) {
             e.preventDefault();
-            let sourceAirportId = $('.source_airport_id').val();
-            let destinationAirportId = $('.destination_airport_id').val();
+            let fromCityName = $('.source_airport').val();
+            let toCityName = $('.destination_airport').val();
             $.ajax({
-                url: '/dashboard/find-flight/' + sourceAirportId + '/' + destinationAirportId,
+                url: '/dashboard/find-flight/' + fromCityName + '/' + toCityName,
                 type: 'POST',
                 data: {
                     _token: "{{ csrf_token() }}",

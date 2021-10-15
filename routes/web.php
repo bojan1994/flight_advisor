@@ -37,6 +37,6 @@ Route::post('/dashboard/search-by-city/{cityName}', 'App\Http\Controllers\Search
 
 Route::get('/dashboard/find-flight', 'App\Http\Controllers\FlightController@index')->middleware(['auth', 'regular'])->name('flight.index');
 
-Route::post('/dashboard/find-flight/{sourceAirportId}/{destinationAirportId}', 'App\Http\Controllers\FlightController@getFlights')->middleware(['auth', 'regular'])->name('flight.find');
+Route::post('/dashboard/find-flight/{fromCityName}/{toCityName}', 'App\Http\Controllers\FlightController@getFlights')->middleware(['auth', 'regular'])->name('flight.find');
 
 require __DIR__.'/auth.php';
