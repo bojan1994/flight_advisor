@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Http\Requests\CommentRequest;
 use App\Models\Comment;
 use App\Models\City;
+use Illuminate\Http\Request;
+
 
 class CommentController extends Controller
 {
@@ -24,8 +26,14 @@ class CommentController extends Controller
         return redirect()->route('dashboard');
     }
 
-    public function edit(Comment $comment)
+    public function edit(Request $request, Comment $comment)
     {
+        if ($request->user()->cannot('userComment', $comment)) {
+            notify()->error('You dont have permission to edit this comment');
+
+            return back();
+        }
+
         return view('edit-comment', ['comment' => $comment]);
     }
 
@@ -39,8 +47,14 @@ class CommentController extends Controller
         return redirect()->route('dashboard');
     }
 
-    public function destroy(Comment $comment)
+    public function destroy(Request $request, Comment $comment)
     {
+        if ($request->user()->cannot('userComment', $comment)) {
+            notify()->error('You dont have permission to delete this comment');
+
+            return back();
+        }
+
         $comment->delete();
 
         notify()->success('Comment deleted');
