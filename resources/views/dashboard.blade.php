@@ -48,7 +48,6 @@
                                     <th scope="col">Longitude</th>
                                     <th scope="col">Altitude</th>
                                     <th scope="col">Tz</th>
-                                    <th scope="col">Type</th>
                                     <th scope="col">Source</th>
                                 </tr>
                             </thead>
@@ -65,14 +64,14 @@
                                         <td>{{ $airport->longitude }}</td>
                                         <td>{{ $airport->altitude }}</td>
                                         <td>{{ $airport->tz }}</td>
-                                        <td>{{ $airport->type }}</td>
                                         <td>{{ $airport->source }}</td>
                                     </tr>
                                 @endforeach
                             </tbody>
                         </table>
                     @elseif (Auth::user()->role == 'regular')
-                        <a href="{{ route('comment.create') }}">Add comment</a>
+                        <a class="d-block" href="{{ route('flight.index') }}">Find flight</a>
+                        <a class="d-block" href="{{ route('comment.create') }}">Add comment</a>
                         <div>
                             Search by city: <input class="filter_by_city" type="text" name="filter_by_city" />
                         </div>

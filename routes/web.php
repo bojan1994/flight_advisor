@@ -31,8 +31,12 @@ Route::patch('/dashboard/update-comment/{comment}', 'App\Http\Controllers\Commen
 
 Route::delete('/dashboard/delete-comment/{comment}', 'App\Http\Controllers\CommentController@destroy')->middleware(['auth', 'regular'])->name('comment.delete');
 
-Route::post('/dashboard/number-of-comments/{cityId}/{limit}', 'App\Http\Controllers\NumberOfCommentsController')->name('comments.number');
+Route::post('/dashboard/number-of-comments/{cityId}/{limit}', 'App\Http\Controllers\NumberOfCommentsController')->middleware(['auth', 'regular'])->name('comments.number');
 
-Route::post('/dashboard/search-by-city/{cityName}', 'App\Http\Controllers\SearchByCityController')->name('city.search');
+Route::post('/dashboard/search-by-city/{cityName}', 'App\Http\Controllers\SearchByCityController')->middleware(['auth', 'regular'])->name('city.search');
+
+Route::get('/dashboard/find-flight', 'App\Http\Controllers\FlightController@index')->middleware(['auth', 'regular'])->name('flight.index');
+
+Route::post('/dashboard/find-flight/{sourceAirportId}/{destinationAirportId}', 'App\Http\Controllers\FlightController@getFlights')->middleware(['auth', 'regular'])->name('flight.find');
 
 require __DIR__.'/auth.php';
